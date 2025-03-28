@@ -1,0 +1,61 @@
+use hr;
+select  * from employees;
+select * from  departments;
+select * from  jobs;
+
+#question1
+select employees.first_name,employees.last_name,employees.salary ,departments.department_name,
+rank() over(partition by employees.department_id order by employees.salary ) as salary_rank
+from employees join departments on employees.department_id = departments.department_id;
+
+#question2
+select employees.first_name,employees.last_name,departments.department_name 
+from employees join departments on employees.employee_id = departments.manager_id;
+
+#question3
+select departments.department_name, if(departments.manager_id is null, "no manager", "has manager" ) as Stauts1 from departments;
+
+#question4
+select  employees.job_id,count(employees.employee_id) as employee_count,avg(employees.salary) as average_salary 
+from employees group by employees.job_id having (employee_count > 3 and average_salary  <6000);
+
+#question5
+select employees.employee_id,employees.first_name,employees.last_name,employees.salary from 
+employees where employees.salary >(select avg(salary)from employees);
+
+#question6
+select employees.employee_id ,employees.first_name,employees.last_name,employees.hire_date 
+from employees where employees.hire_date >(select hire_date from employees where employee_id = 103);
+
+select hire_date from employees where employee_id = 103;
+
+#question7
+select departments.department_name,sum(employees.salary) as total_salary,avg(employees.salary) as avg_salary,count(employees.employee_id) as employee_count 
+from  employees join departments on employees.department_id = departments.department_id 
+group by departments.department_name;
+
+#question8
+select departments.department_name, avg(salary) as avg_salary from departments 
+join employees on employees.department_id = departments.department_id group by department_name order by avg_salary desc
+limit 10;
+
+
+use classicmodels;
+
+select * from products;
+select * from orders;
+select * from customers;
+select * from orderdetails;
+select customerName,orderNumber from customers inner join orders on  customers.customerNumber=orders.customerNumber;
+select productname,quantityordered from products inner join orderdetails on products.productCode=orderdetails.productCode;
+select orderNumber,quantityordered from orderdetails right join products on products.productCode=orderdetails.productCode;
+
+
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'Suguna@_1806';
+FLUSH PRIVILEGES;
+EXIT;
+
+
+
+
