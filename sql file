@@ -1,0 +1,75 @@
+select * from products;
+select productCode,productName,productLine from products;
+select customerName,country from customers;
+select * from employees;
+select orderNumber,status from orders;
+select productName,msrp from products;
+select * from customers where country = 'USA';
+select * from orders where status ='Shipped';
+select * from products where productLine ='Motorcyles';
+select * from employees where jobTitle like '%sales%' ;
+select productcode,productname,buyprice from products where buyprice > 50;
+select * from customers where creditlimit >100000;
+select * from customers where  (creditlimit > 100000 or country ='USA') and not state = 'NY';
+use classicmodels;
+select * from products order by productName asc;
+select * from customers order by creditlimit desc;
+select * from orders order by orderDate asc;
+select * from employees order by lastName ,firstname asc;
+select * from products order by quantityinstock desc;
+select * from customers limit 5 ;
+select * from orders order by orderDate asc limit 10 ;
+select * from products order by MSRP desc limit 3;
+select * from employees order by lastName asc limit 5;
+select * from productlines limit 7;
+select Count(*) from orders;
+select sum(priceEach*quantityOrdered) as  totalsales from orderdetails; 
+select avg(creditLimit) from customers;
+select max(MSRP) as retailprice , min(MSRP) as retailprice from products;
+select distinct productLine from products;
+use classicmodels;
+select count(*) as total_count from orders;
+select min(quantityinstock) as minmum_quantity from products where productline ='classic cars';
+select sum(amount) as total_payment from payments;
+select country,count(customerName) from customers group by country;
+select productCode ,avg(quantityordered) as average_quantity from orderdetails group by productcode;
+select customernumber,sum(amount) as total_amount from payments group by customernumber;
+select country ,max(creditLimit) as max_creditlimit from customers group by country ;
+select * from orders;
+select customerNumber,count(*) as total_order from orders group by customerNumber;
+select * from payments;
+select customerNumber,sum(amount) as total_amount from payments group by customerNumber having sum(amount) >50000;
+select * from offices;
+select productLine, avg(msrp) as list_total from products group by productLine having avg(msrp) < 100;
+select orderNumber ,sum(quantityordered) as order_quantity from orderdetails group by orderNumber having sum(quantityordered) >500;
+select customerNumber,count(*) as total_order from orders group by customerNumber having count(*) >5;
+select productCode,avg(quantityordered) as total_order from orderdetails group by productCode having avg(quantityordered)>50;
+select customerNumber,sum(amount) as total_amount from payments group by customerNumber having sum(amount)>=1000;
+select productLine, max(msrp) as list_amount from products group by productLine having max(msrp) > 200;
+use classicmodels;
+select customerName,orderNumber from customers inner join orders on  customers.customerNumber=orders.customerNumber;
+select productname,quantityordered from products inner join orderdetails on products.productCode=orderdetails.productCode;
+select employees.employeenumber,employees.lastname,employees.officecode from employees inner join offices on employees.officecode = offices.officecode where city='Boston';
+select orderNumber,orderdate,status from orders inner join customers on customers.customerNumber=orders.customerNumber where country='USA';
+select products.productName,orders.orderNumber,orderdetails.quantityOrdered from products inner join orderdetails on products.productCode=orderdetails.productCode 
+inner join orders on orderdetails.orderNumber =orders.ordernumber where productline = 'classic cars';
+select customerName,orderNumber from customers left join orders on  customers.customerNumber=orders.customerNumber;
+select employees.employeenumber,employees.lastname,customers.customerName from 
+employees left join customers on employees.employeeNumber = customers.salesRepEmployeeNumber;
+select products.productCode,products.productName,orderdetails.orderNumber from products left join orderdetails on products.productCode=orderdetails.productCode;
+select offices.officecode,offices.city,employees.employeeNumber from offices left join employees on offices.officecode =employees.officecode;
+select  orderNumber, paymentdate from orders left join payments on orders.customerNumber=payments.customerNumber;
+select customerName,checknumber from  payments right join customers on customers.customerNumber = payments.customerNumber;
+select orderNumber,quantityordered from orderdetails right join products on products.productCode=orderdetails.productCode;
+select employees.employeenumber,customerName from customers right join employees on employees.employeeNumber = customers.salesRepEmployeeNumber;
+desc orderdetails;
+select products.productName,orderdetails.orderNumber,quantityordered from product left join orderdetails on products.productCode=orderdetails.productCode union 
+select products.productName,orderdetails.orderNumber,quantityordered from product right join orderdetails on products.productCode=orderdetails.productCode;
+select offices.officecode,offices.city,employees.employeeNumber,employees.firstname,employees.lastname from employees left join 
+offices on offices.officecode =employees.officecode union select offices.officecode,offices.city,employees.employeeNumber,employees.firstname,employees.lastname 
+from employees right join offices on offices.officecode =employees.officecode;
+select orderNumber,orderdate,requiredDate,payments.customerNumber,payments.checknumber,amount from orders
+left join payments on orders.customerNumber=payments.customerNumber union 
+select orderNumber,orderdate,requiredDate,payments.customerNumber,payments.checknumber,amount
+from orders right join payments on orders.customerNumber=payments.customerNumber;
+
